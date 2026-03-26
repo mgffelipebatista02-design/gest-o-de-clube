@@ -1,120 +1,55 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { MainLayout } from '@/components/layout/MainLayout'
+
+// Auth pages
+import LoginPage from '@/pages/auth/LoginPage'
+import RegisterPage from '@/pages/auth/RegisterPage'
+import ForgotPasswordPage from '@/pages/auth/ForgotPasswordPage'
+
+// Main pages
+import AdminDashboard from '@/pages/dashboard/AdminDashboard'
+import { HomePage } from '@/pages/home/HomePage'
+import CalendarPage from '@/pages/calendar/CalendarPage'
+import SquadListPage from '@/pages/squad/SquadListPage'
+import { AthleteProfilePage } from '@/pages/squad/AthleteProfilePage'
+import { LineupPage } from '@/pages/lineup/LineupPage'
+import { ReportsPage } from '@/pages/reports/ReportsPage'
+import { ClinicalPage } from '@/pages/clinical/ClinicalPage'
+import { ConvocationPage } from '@/pages/convocation/ConvocationPage'
+import { AthleteStatsPage } from '@/pages/stats/AthleteStatsPage'
+import { ProfilePage } from '@/pages/profile/ProfilePage'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <BrowserRouter>
+      <Routes>
+        {/* Auth routes */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/registro" element={<RegisterPage />} />
+        <Route path="/esqueci-senha" element={<ForgotPasswordPage />} />
 
-      <div className="ticks"></div>
+        {/* Protected routes */}
+        <Route element={<MainLayout />}>
+          <Route path="/dashboard" element={<AdminDashboard />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/calendario" element={<CalendarPage />} />
+          <Route path="/elenco" element={<SquadListPage />} />
+          <Route path="/elenco/:id" element={<AthleteProfilePage />} />
+          <Route path="/escalacao" element={<LineupPage />} />
+          <Route path="/relatorios" element={<ReportsPage />} />
+          <Route path="/desempenho" element={<ReportsPage />} />
+          <Route path="/clinico" element={<ClinicalPage />} />
+          <Route path="/convocacao" element={<ConvocationPage />} />
+          <Route path="/stats" element={<AthleteStatsPage />} />
+          <Route path="/treinos" element={<CalendarPage />} />
+          <Route path="/perfil" element={<ProfilePage />} />
+          <Route path="/config" element={<ProfilePage />} />
+        </Route>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+        {/* Default redirect */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 

@@ -1,0 +1,72 @@
+import type { User } from '@/types'
+
+export const mockUsers: User[] = [
+  {
+    id: 'u1',
+    nome: 'Carlos Mendes',
+    email: 'carlos@clubepro.com',
+    foto: 'https://api.dicebear.com/9.x/initials/svg?seed=CM&backgroundColor=1B5E20',
+    telefone: '(11) 99999-0001',
+    cargo: 'Presidente',
+    dataNascimento: '1978-05-14',
+    role: 'admin',
+  },
+  {
+    id: 'u2',
+    nome: 'Marcos Silva',
+    email: 'marcos@clubepro.com',
+    foto: 'https://api.dicebear.com/9.x/initials/svg?seed=MS&backgroundColor=1565C0',
+    telefone: '(11) 99999-0002',
+    cargo: 'Treinador Principal',
+    dataNascimento: '1988-03-22',
+    role: 'tecnico',
+  },
+  {
+    id: 'u3',
+    nome: 'Roberto Almeida',
+    email: 'roberto@clubepro.com',
+    foto: 'https://api.dicebear.com/9.x/initials/svg?seed=RA&backgroundColor=E65100',
+    telefone: '(11) 99999-0003',
+    cargo: 'Preparador Fisico',
+    dataNascimento: '1991-08-10',
+    role: 'preparador',
+  },
+  {
+    id: 'u4',
+    nome: 'Ana Beatriz Costa',
+    email: 'ana@clubepro.com',
+    foto: 'https://api.dicebear.com/9.x/initials/svg?seed=AB&backgroundColor=7B1FA2',
+    telefone: '(11) 99999-0004',
+    cargo: 'Fisioterapeuta',
+    dataNascimento: '1996-01-30',
+    role: 'fisioterapeuta',
+  },
+  {
+    id: 'u5',
+    nome: 'Fernando Gomes',
+    email: 'fernando@clubepro.com',
+    foto: 'https://api.dicebear.com/9.x/initials/svg?seed=FG&backgroundColor=5D4037',
+    telefone: '(11) 99999-0005',
+    cargo: 'Diretor de Futebol',
+    dataNascimento: '1975-11-08',
+    role: 'admin',
+  },
+  {
+    id: 'u6',
+    nome: 'Paulo Henrique',
+    email: 'paulo@clubepro.com',
+    foto: 'https://api.dicebear.com/9.x/initials/svg?seed=PH&backgroundColor=1565C0',
+    telefone: '(11) 99999-0006',
+    cargo: 'Auxiliar Tecnico',
+    dataNascimento: '1990-06-15',
+    role: 'tecnico',
+  },
+]
+
+export const loginCredentials: Record<string, { email: string; senha: string; userId: string }> = {
+  admin: { email: 'carlos@clubepro.com', senha: 'Admin@123', userId: 'u1' },
+  tecnico: { email: 'marcos@clubepro.com', senha: 'Tech@123', userId: 'u2' },
+  preparador: { email: 'roberto@clubepro.com', senha: 'Prep@123', userId: 'u3' },
+  fisioterapeuta: { email: 'ana@clubepro.com', senha: 'Fisio@123', userId: 'u4' },
+  atleta: { email: 'lucas@clubepro.com', senha: 'Atleta@123', userId: 'a1' },
+}
