@@ -18,6 +18,7 @@ const NAV_CONFIG: Record<UserRole, NavItem[]> = {
   tecnico: [
     { label: 'Home', icon: 'Home', path: '/home' },
     { label: 'Calendario', icon: 'Calendar', path: '/calendario' },
+    { label: 'Convocacao', icon: 'ClipboardCheck', path: '/convocacao' },
     { label: 'Escalacao', icon: 'ClipboardList', path: '/escalacao' },
     { label: 'Desempenho', icon: 'TrendingUp', path: '/desempenho' },
     { label: 'Perfil', icon: 'User', path: '/perfil' },
@@ -61,6 +62,7 @@ export function usePermissions() {
     canManageUsers: role === 'admin',
     canCreateEvents: ['admin', 'tecnico', 'preparador', 'fisioterapeuta'].includes(role),
     canCreateLineup: ['admin', 'tecnico'].includes(role),
+    canManageConvocation: ['admin', 'tecnico'].includes(role),
     canViewReports: ['admin', 'tecnico', 'preparador'].includes(role),
     canManageClinical: ['admin', 'fisioterapeuta'].includes(role),
     canConfirmPresence: role === 'atleta',

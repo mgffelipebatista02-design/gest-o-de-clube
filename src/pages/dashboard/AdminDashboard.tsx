@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { format, isAfter, parseISO } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
@@ -12,6 +12,10 @@ import {
   AlertTriangle,
   Clock,
   MapPin,
+  Briefcase,
+  UserCog,
+  Filter,
+  Timer,
 } from 'lucide-react'
 import {
   PieChart,
@@ -29,13 +33,21 @@ import {
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { TopBar } from '@/components/layout/TopBar'
 import { mockAthletes } from '@/data/mockAthletes'
+import { mockUsers } from '@/data/mockUsers'
 import { mockEvents } from '@/data/mockEvents'
 import { mockInjuries } from '@/data/mockInjuries'
 import { mockPayments } from '@/data/mockPayments'
 import { EVENT_COLORS } from '@/types'
-import type { ClubEvent } from '@/types'
+import type { ClubEvent, Category, UserRole } from '@/types'
 
 const STATUS_PIE_COLORS: Record<string, string> = {
   ativo: '#059669',
@@ -45,43 +57,124 @@ const STATUS_PIE_COLORS: Record<string, string> = {
   suspenso: '#D97706',
 }
 
-const CATEGORY_BAR_DATA = [
-  { categoria: 'Sub-15', presenca: 82 },
-  { categoria: 'Sub-17', presenca: 88 },
-  { categoria: 'Sub-20', presenca: 75 },
-  { categoria: 'Profissional', presenca: 91 },
+const CATEGORY_LABELS: Record<Category, string> = {
+  'sub-15': 'Sub-15',
+  'sub-17': 'Sub-17',
+  'sub-20': 'Sub-20',
+  profissional: 'Profissional',
+}
+
+const ALL_CATEGORIES: Category[] = ['sub-15', 'sub-17', 'sub-20', 'profissional']
+
+// Funcoes do clube exibidas no quadro de pessoal (funcionarios)
+const STAFF_ROLES: { role: UserRole; label: string }[] = [
+  { role: 'admin', label: 'Direcao' },
+  { role: 'tecnico', label: 'Comissao Tecnica' },
+  { role: 'preparador', label: 'Preparadores Fisicos' },
+  { role: 'fisioterapeuta', label: 'Fisioterapeutas' },
 ]
 
 export default function AdminDashboard() {
   const navigate = useNavigate()
   const now = new Date()
 
-  // Stats
+  // Filtro por escalao ('geral' = todos os escaloes)
+  const [escalao, setEscalao] = useState<string>('geral')
+
+  // Atletas do escalao selecionado (ou todos quando 'geral')
+  const atletas = useMemo(
+    () =>
+      escalao === 'geral'
+        ? mockAthletes
+        : mockAthletes.filter((a) => a.categoria === escalao),
+    [escalao]
+  )
+
+  // Ids dos atletas filtrados, para cruzar com lesoes/pagamentos
+  const atletaIds = useMemo(
+    () => new Set(atletas.map((a) => a.id)),
+    [atletas]
+  )
+
+  // Stats (respeitam o escalao selecionado)
   const atletasAtivos = useMemo(
-    () => mockAthletes.filter((a) => a.status === 'ativo').length,
-    []
+    () => atletas.filter((a) => a.status === 'ativo').length,
+    [atletas]
   )
 
   const presencaMedia = useMemo(() => {
-    const athletes = mockAthletes.filter((a) => a.totalTreinos > 0)
-    if (athletes.length === 0) return 0
-    const total = athletes.reduce(
+    const treinados = atletas.filter((a) => a.totalTreinos > 0)
+    if (treinados.length === 0) return 0
+    const total = treinados.reduce(
       (acc, a) => acc + (a.presencaTreinos / a.totalTreinos) * 100,
       0
     )
-    return Math.round(total / athletes.length)
-  }, [])
+    return Math.round(total / treinados.length)
+  }, [atletas])
 
   const lesoesAbertas = useMemo(
-    () => mockInjuries.filter((i) => i.status !== 'liberado').length,
-    []
+    () =>
+      mockInjuries.filter(
+        (i) => i.status !== 'liberado' && atletaIds.has(i.atletaId)
+      ).length,
+    [atletaIds]
   )
 
   const pagamentosPendentes = useMemo(
     () =>
       mockPayments.filter(
-        (p) => p.status === 'pendente' || p.status === 'atrasado'
+        (p) =>
+          (p.status === 'pendente' || p.status === 'atrasado') &&
+          atletaIds.has(p.atletaId)
       ).length,
+    [atletaIds]
+  )
+
+  // Minutagem dos atletas (respeita o escalao selecionado)
+  const minutosTotais = useMemo(
+    () => atletas.reduce((acc, a) => acc + a.minutosJogados, 0),
+    [atletas]
+  )
+
+  const minutagemMedia = useMemo(() => {
+    const jogadores = atletas.filter((a) => a.jogosDisputados > 0)
+    if (jogadores.length === 0) return 0
+    const total = jogadores.reduce((acc, a) => acc + a.minutosJogados, 0)
+    return Math.round(total / jogadores.length)
+  }, [atletas])
+
+  // Quadro de pessoal do clube (funcionarios sao sempre do clube inteiro)
+  const totalFuncionarios = mockUsers.length
+  const totalAtletas = atletas.length
+  const totalPessoas = totalFuncionarios + totalAtletas
+
+  const funcionariosPorFuncao = useMemo(
+    () =>
+      STAFF_ROLES.map((r) => ({
+        ...r,
+        count: mockUsers.filter((u) => u.role === r.role).length,
+      })),
+    []
+  )
+
+  // Presenca media real por escalao (comparativo, sempre do clube inteiro)
+  const presencaPorCategoria = useMemo(
+    () =>
+      ALL_CATEGORIES.map((cat) => {
+        const treinados = mockAthletes.filter(
+          (a) => a.categoria === cat && a.totalTreinos > 0
+        )
+        const presenca =
+          treinados.length === 0
+            ? 0
+            : Math.round(
+                treinados.reduce(
+                  (acc, a) => acc + (a.presencaTreinos / a.totalTreinos) * 100,
+                  0
+                ) / treinados.length
+              )
+        return { categoria: CATEGORY_LABELS[cat], presenca }
+      }),
     []
   )
 
@@ -97,11 +190,13 @@ export default function AdminDashboard() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Alerts
+  // Alerts (respeitam o escalao selecionado)
   const alerts = useMemo(() => {
     const items: { text: string; color: string; type: string }[] = []
 
-    const overduePayments = mockPayments.filter((p) => p.status === 'atrasado')
+    const overduePayments = mockPayments.filter(
+      (p) => p.status === 'atrasado' && atletaIds.has(p.atletaId)
+    )
     if (overduePayments.length > 0) {
       items.push({
         text: `${overduePayments.length} pagamento(s) em atraso`,
@@ -110,7 +205,9 @@ export default function AdminDashboard() {
       })
     }
 
-    const activeInjuries = mockInjuries.filter((i) => i.status === 'em-tratamento')
+    const activeInjuries = mockInjuries.filter(
+      (i) => i.status === 'em-tratamento' && atletaIds.has(i.atletaId)
+    )
     if (activeInjuries.length > 0) {
       items.push({
         text: `${activeInjuries.length} atleta(s) em tratamento`,
@@ -119,7 +216,7 @@ export default function AdminDashboard() {
       })
     }
 
-    const expiringContracts = mockAthletes.filter((a) => {
+    const expiringContracts = atletas.filter((a) => {
       if (!a.contratoFim) return false
       const end = parseISO(a.contratoFim)
       const diffDays =
@@ -134,7 +231,9 @@ export default function AdminDashboard() {
       })
     }
 
-    const pendingPayments = mockPayments.filter((p) => p.status === 'pendente')
+    const pendingPayments = mockPayments.filter(
+      (p) => p.status === 'pendente' && atletaIds.has(p.atletaId)
+    )
     if (pendingPayments.length > 0) {
       items.push({
         text: `${pendingPayments.length} pagamento(s) pendente(s)`,
@@ -145,16 +244,16 @@ export default function AdminDashboard() {
 
     return items
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [atletas, atletaIds])
 
-  // Pie chart data
+  // Pie chart data (respeita o escalao selecionado)
   const pieData = useMemo(() => {
     const statusCount: Record<string, number> = {}
-    mockAthletes.forEach((a) => {
+    atletas.forEach((a) => {
       statusCount[a.status] = (statusCount[a.status] || 0) + 1
     })
     return Object.entries(statusCount).map(([name, value]) => ({ name, value }))
-  }, [])
+  }, [atletas])
 
   const statCards = [
     {
@@ -185,6 +284,20 @@ export default function AdminDashboard() {
       bgColor: 'bg-slate-100',
       iconColor: 'text-slate-600',
     },
+    {
+      label: 'Minutos Jogados',
+      value: minutosTotais.toLocaleString('pt-BR'),
+      icon: Clock,
+      bgColor: 'bg-slate-100',
+      iconColor: 'text-slate-600',
+    },
+    {
+      label: 'Minutagem Media',
+      value: `${minutagemMedia.toLocaleString('pt-BR')} min`,
+      icon: Timer,
+      bgColor: 'bg-slate-100',
+      iconColor: 'text-slate-600',
+    },
   ]
 
   const statusLabels: Record<string, string> = {
@@ -211,8 +324,95 @@ export default function AdminDashboard() {
       <TopBar title="Dashboard" subtitle="Visao geral do clube" />
 
       <main className="p-4 md:p-6 space-y-6 max-w-7xl mx-auto">
+        {/* Filtro por escalao */}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 className="text-lg font-semibold text-foreground">
+              Estatisticas do Clube
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              {escalao === 'geral'
+                ? 'Visao geral de todos os escaloes'
+                : `Filtrando por ${CATEGORY_LABELS[escalao as Category]}`}
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Filter className="w-4 h-4 text-muted-foreground" />
+            <Select
+              value={escalao}
+              onValueChange={(v) => setEscalao(v ?? 'geral')}
+            >
+              <SelectTrigger className="min-w-44">
+                <SelectValue placeholder="Escalao" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="geral">Geral (todos)</SelectItem>
+                {ALL_CATEGORIES.map((cat) => (
+                  <SelectItem key={cat} value={cat}>
+                    {CATEGORY_LABELS[cat]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* Quadro de Pessoal do Clube */}
+        <Card className="border-0 shadow-sm">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base font-semibold flex items-center gap-2">
+              <Users className="w-4 h-4 text-slate-600" />
+              Quadro de Pessoal do Clube
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+              <div className="space-y-1">
+                <p className="text-xs text-muted-foreground font-medium">
+                  Total de Pessoas
+                </p>
+                <p className="text-2xl font-bold text-foreground">
+                  {totalPessoas}
+                </p>
+              </div>
+              <div className="space-y-1">
+                <p className="text-xs text-muted-foreground font-medium flex items-center gap-1">
+                  <Briefcase className="w-3 h-3" /> Funcionarios
+                </p>
+                <p className="text-2xl font-bold text-foreground">
+                  {totalFuncionarios}
+                </p>
+              </div>
+              <div className="space-y-1">
+                <p className="text-xs text-muted-foreground font-medium flex items-center gap-1">
+                  <Users className="w-3 h-3" /> Atletas
+                </p>
+                <p className="text-2xl font-bold text-foreground">
+                  {totalAtletas}
+                </p>
+              </div>
+              {funcionariosPorFuncao.map((f) => (
+                <div key={f.role} className="space-y-1">
+                  <p className="text-xs text-muted-foreground font-medium flex items-center gap-1">
+                    <UserCog className="w-3 h-3" /> {f.label}
+                  </p>
+                  <p className="text-2xl font-bold text-foreground">
+                    {f.count}
+                  </p>
+                </div>
+              ))}
+            </div>
+            {escalao !== 'geral' && (
+              <p className="mt-3 text-xs text-muted-foreground">
+                O numero de funcionarios refere-se ao clube inteiro; apenas os
+                atletas sao filtrados por escalao.
+              </p>
+            )}
+          </CardContent>
+        </Card>
+
         {/* Stat Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
           {statCards.map((stat) => (
             <Card key={stat.label} className="border-0 shadow-sm">
               <CardContent className="p-4">
@@ -382,7 +582,7 @@ export default function AdminDashboard() {
             <CardContent>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={CATEGORY_BAR_DATA}>
+                  <BarChart data={presencaPorCategoria}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#E0E0E0" />
                     <XAxis
                       dataKey="categoria"

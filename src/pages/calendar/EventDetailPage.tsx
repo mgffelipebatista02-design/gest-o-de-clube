@@ -12,9 +12,11 @@ import {
 } from 'lucide-react'
 import { TopBar } from '@/components/layout/TopBar'
 import { useCalendarStore } from '@/store/calendarStore'
-import { EVENT_COLORS, EVENT_LABELS } from '@/types'
+import { useConvocationStore } from '@/store/convocationStore'
+import { EVENT_COLORS, EVENT_LABELS, POSITION_LABELS } from '@/types'
 import type { ConfirmationStatus } from '@/types'
 import { mockAthletes } from '@/data/mockAthletes'
+import { mockUsers } from '@/data/mockUsers'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -47,6 +49,9 @@ export default function EventDetailPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const events = useCalendarStore((s) => s.events)
+  const convocation = useConvocationStore((s) =>
+    s.convocations.find((c) => c.eventoId === id)
+  )
 
   const event = events.find((e) => e.id === id)
 
@@ -68,6 +73,18 @@ export default function EventDetailPage() {
   const attendance = getMockAttendance(event.id)
   const confirmedCount = attendance.filter((a) => a.status === 'confirmado').length
   const startDate = parseISO(event.dataInicio)
+
+  const convokedAthletes = convocation
+    ? convocation.atletasConvocados
+        .map((aid) => mockAthletes.find((a) => a.id === aid))
+        .filter((a): a is NonNullable<typeof a> => Boolean(a))
+        .sort((a, b) => a.numeroCamisa - b.numeroCamisa)
+    : []
+  const convokedStaff = convocation
+    ? convocation.comissaoConvocada
+        .map((sid) => mockUsers.find((u) => u.id === sid))
+        .filter((s): s is NonNullable<typeof s> => Boolean(s))
+    : []
   const endDate = parseISO(event.dataFim)
 
   return (
@@ -161,6 +178,69 @@ export default function EventDetailPage() {
             </>
           )}
         </Card>
+
+        {/* Convocation section (quando existe convocacao para o evento) */}
+        {convocation && (
+          <Card className="p-5 space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Users className="w-5 h-5 text-muted-foreground" />
+                <h3 className="font-semibold">Convocados</h3>
+              </div>
+              <Badge variant="secondary">{convokedAthletes.length} atletas</Badge>
+            </div>
+            <Separator />
+            <div className="space-y-2">
+              {convokedAthletes.map((a) => (
+                <div
+                  key={a.id}
+                  className="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-muted/50 transition-colors"
+                >
+                  <img src={a.foto} alt={a.nome} className="w-8 h-8 rounded-full" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">{a.nome}</p>
+                    <p className="text-xs text-muted-foreground">
+                      #{a.numeroCamisa} | {POSITION_LABELS[a.posicao]}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {convokedStaff.length > 0 && (
+              <>
+                <Separator />
+                <p className="text-sm font-medium">Comissao Tecnica</p>
+                <div className="space-y-2">
+                  {convokedStaff.map((s) => (
+                    <div
+                      key={s.id}
+                      className="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-muted/50 transition-colors"
+                    >
+                      <img src={s.foto} alt={s.nome} className="w-8 h-8 rounded-full" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium truncate">{s.nome}</p>
+                        <p className="text-xs text-muted-foreground">{s.cargo}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {convocation.observacoes && (
+              <>
+                <Separator />
+                <div>
+                  <p className="text-sm font-medium mb-1">Observacoes</p>
+                  <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+                    {convocation.observacoes}
+                  </p>
+                </div>
+              </>
+            )}
+          </Card>
+        )}
 
         {/* Attendance section */}
         <Card className="p-5 space-y-4">

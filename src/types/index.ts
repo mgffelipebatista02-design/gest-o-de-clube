@@ -75,8 +75,11 @@ export interface Convocation {
   id: string
   eventoId: string
   criadoPor: string
+  criadoPorNome?: string
   data: string
   atletasConvocados: string[]
+  comissaoConvocada: string[]
+  observacoes?: string
   confirmacoes: EventConfirmation[]
 }
 

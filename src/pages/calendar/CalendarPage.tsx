@@ -24,6 +24,8 @@ import {
   Clock,
   Filter,
   User,
+  Trophy,
+  ClipboardCheck,
 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { TopBar } from '@/components/layout/TopBar'
@@ -75,7 +77,7 @@ export default function CalendarPage() {
   const events = useCalendarStore((s) => s.events)
   const addEvent = useCalendarStore((s) => s.addEvent)
   const user = useAuthStore((s) => s.user)
-  const { canCreateEvents } = usePermissions()
+  const { canCreateEvents, canManageConvocation } = usePermissions()
 
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDay, setSelectedDay] = useState<Date | null>(null)
@@ -91,6 +93,8 @@ export default function CalendarPage() {
   const [newLocal, setNewLocal] = useState('')
   const [newDescription, setNewDescription] = useState('')
   const [newPublic, setNewPublic] = useState(true)
+  const [newAdversario, setNewAdversario] = useState('')
+  const [newCompeticao, setNewCompeticao] = useState('')
 
   const filteredEvents = useMemo(
     () => events.filter((e) => activeFilters.includes(e.tipo)),
@@ -115,6 +119,8 @@ export default function CalendarPage() {
     setNewLocal('')
     setNewDescription('')
     setNewPublic(true)
+    setNewAdversario('')
+    setNewCompeticao('')
   }
 
   function handleCreateEvent() {
@@ -131,6 +137,9 @@ export default function CalendarPage() {
       recorrente: false,
       criadoPor: user?.id ?? '',
       criadoPorNome: user?.nome ?? '',
+      ...(newType === 'jogo'
+        ? { adversario: newAdversario, competicao: newCompeticao }
+        : {}),
     }
     addEvent(event)
     resetForm()
@@ -222,6 +231,27 @@ export default function CalendarPage() {
                     />
                   </div>
                 </div>
+
+                {newType === 'jogo' && (
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-2">
+                      <Label>Adversario</Label>
+                      <Input
+                        value={newAdversario}
+                        onChange={(e) => setNewAdversario(e.target.value)}
+                        placeholder="Ex: FC Estrela"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Competicao</Label>
+                      <Input
+                        value={newCompeticao}
+                        onChange={(e) => setNewCompeticao(e.target.value)}
+                        placeholder="Ex: Campeonato Regional"
+                      />
+                    </div>
+                  </div>
+                )}
 
                 <div className="space-y-2">
                   <Label>Local</Label>
@@ -348,6 +378,7 @@ export default function CalendarPage() {
               <div className="grid grid-cols-7 gap-px bg-border rounded-lg overflow-hidden">
                 {monthDays.map((day) => {
                   const dayEvents = getEventsForDay(day)
+                  const hasGame = dayEvents.some((e) => e.tipo === 'jogo')
                   const isCurrentMonth = isSameMonth(day, currentDate)
                   const isTodayDate = isToday(day)
                   const isSelected = selectedDay ? isSameDay(day, selectedDay) : false
@@ -378,15 +409,24 @@ export default function CalendarPage() {
                         </button>
                       )}
 
-                      <span
-                        className={`inline-flex items-center justify-center w-6 h-6 text-xs font-medium rounded-full ${
-                          isTodayDate
-                            ? 'bg-primary text-primary-foreground ring-2 ring-primary/30'
-                            : ''
-                        }`}
-                      >
-                        {format(day, 'd')}
-                      </span>
+                      <div className="flex items-center justify-between">
+                        <span
+                          className={`inline-flex items-center justify-center w-6 h-6 text-xs font-medium rounded-full ${
+                            isTodayDate
+                              ? 'bg-primary text-primary-foreground ring-2 ring-primary/30'
+                              : ''
+                          }`}
+                        >
+                          {format(day, 'd')}
+                        </span>
+                        {hasGame && (
+                          <Trophy
+                            className="w-3.5 h-3.5"
+                            style={{ color: EVENT_COLORS.jogo }}
+                            aria-label="Dia de jogo"
+                          />
+                        )}
+                      </div>
                       {dayEvents.length > 0 && (
                         <div className="flex flex-wrap gap-0.5 mt-1">
                           {dayEvents.slice(0, 3).map((ev) => (
@@ -426,38 +466,61 @@ export default function CalendarPage() {
                   ) : (
                     <div className="space-y-2">
                       {selectedDayEvents.map((ev) => (
-                        <button
+                        <div
                           key={ev.id}
-                          onClick={() => navigate(`/calendario/evento/${ev.id}`)}
-                          className="w-full text-left p-3 rounded-lg border hover:bg-muted/50 transition-colors"
+                          className="rounded-lg border overflow-hidden"
                         >
-                          <div className="flex items-center gap-2 mb-1">
-                            <span
-                              className="w-3 h-3 rounded-full shrink-0"
-                              style={{ backgroundColor: EVENT_COLORS[ev.tipo] }}
-                            />
-                            <span className="font-medium text-sm">{ev.titulo}</span>
-                          </div>
-                          <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <Clock className="w-3 h-3" />
-                              {format(parseISO(ev.dataInicio), 'HH:mm')} -{' '}
-                              {format(parseISO(ev.dataFim), 'HH:mm')}
-                            </span>
-                            {ev.local && ev.local !== '-' && (
+                          <button
+                            onClick={() => navigate(`/calendario/evento/${ev.id}`)}
+                            className="w-full text-left p-3 hover:bg-muted/50 transition-colors"
+                          >
+                            <div className="flex items-center gap-2 mb-1">
+                              {ev.tipo === 'jogo' ? (
+                                <Trophy
+                                  className="w-3.5 h-3.5 shrink-0"
+                                  style={{ color: EVENT_COLORS.jogo }}
+                                />
+                              ) : (
+                                <span
+                                  className="w-3 h-3 rounded-full shrink-0"
+                                  style={{ backgroundColor: EVENT_COLORS[ev.tipo] }}
+                                />
+                              )}
+                              <span className="font-medium text-sm">{ev.titulo}</span>
+                            </div>
+                            <div className="flex items-center gap-3 text-xs text-muted-foreground">
                               <span className="flex items-center gap-1">
-                                <MapPin className="w-3 h-3" />
-                                {ev.local}
+                                <Clock className="w-3 h-3" />
+                                {format(parseISO(ev.dataInicio), 'HH:mm')} -{' '}
+                                {format(parseISO(ev.dataFim), 'HH:mm')}
                               </span>
+                              {ev.local && ev.local !== '-' && (
+                                <span className="flex items-center gap-1">
+                                  <MapPin className="w-3 h-3" />
+                                  {ev.local}
+                                </span>
+                              )}
+                            </div>
+                            {ev.criadoPorNome && (
+                              <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                                <User className="w-3 h-3" />
+                                Criado por {ev.criadoPorNome}
+                              </p>
                             )}
-                          </div>
-                          {ev.criadoPorNome && (
-                            <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
-                              <User className="w-3 h-3" />
-                              Criado por {ev.criadoPorNome}
-                            </p>
+                          </button>
+                          {ev.tipo === 'jogo' && canManageConvocation && (
+                            <div className="border-t bg-muted/30 px-3 py-2">
+                              <Button
+                                size="sm"
+                                className="w-full"
+                                onClick={() => navigate(`/convocacao/preparar/${ev.id}`)}
+                              >
+                                <ClipboardCheck className="w-4 h-4 mr-1" />
+                                Fazer Convocacao
+                              </Button>
+                            </div>
                           )}
-                        </button>
+                        </div>
                       ))}
                     </div>
                   )}

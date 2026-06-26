@@ -10,12 +10,14 @@ import ForgotPasswordPage from '@/pages/auth/ForgotPasswordPage'
 import AdminDashboard from '@/pages/dashboard/AdminDashboard'
 import { HomePage } from '@/pages/home/HomePage'
 import CalendarPage from '@/pages/calendar/CalendarPage'
+import EventDetailPage from '@/pages/calendar/EventDetailPage'
 import SquadListPage from '@/pages/squad/SquadListPage'
 import { AthleteProfilePage } from '@/pages/squad/AthleteProfilePage'
 import { LineupPage } from '@/pages/lineup/LineupPage'
 import { ReportsPage } from '@/pages/reports/ReportsPage'
 import { ClinicalPage } from '@/pages/clinical/ClinicalPage'
 import { ConvocationPage } from '@/pages/convocation/ConvocationPage'
+import { ConvocationBuilderPage } from '@/pages/convocation/ConvocationBuilderPage'
 import { AthleteStatsPage } from '@/pages/stats/AthleteStatsPage'
 import { ProfilePage } from '@/pages/profile/ProfilePage'
 
@@ -33,6 +35,7 @@ function App() {
           <Route path="/dashboard" element={<AdminDashboard />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/calendario" element={<CalendarPage />} />
+          <Route path="/calendario/evento/:id" element={<EventDetailPage />} />
           <Route path="/elenco" element={<SquadListPage />} />
           <Route path="/elenco/:id" element={<AthleteProfilePage />} />
           <Route path="/escalacao" element={<LineupPage />} />
@@ -40,6 +43,7 @@ function App() {
           <Route path="/desempenho" element={<ReportsPage />} />
           <Route path="/clinico" element={<ClinicalPage />} />
           <Route path="/convocacao" element={<ConvocationPage />} />
+          <Route path="/convocacao/preparar/:eventId" element={<ConvocationBuilderPage />} />
           <Route path="/stats" element={<AthleteStatsPage />} />
           <Route path="/treinos" element={<CalendarPage />} />
           <Route path="/perfil" element={<ProfilePage />} />
