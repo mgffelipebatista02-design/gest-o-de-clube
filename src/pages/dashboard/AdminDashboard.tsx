@@ -38,11 +38,11 @@ import { EVENT_COLORS } from '@/types'
 import type { ClubEvent } from '@/types'
 
 const STATUS_PIE_COLORS: Record<string, string> = {
-  ativo: '#2E7D32',
-  lesionado: '#C62828',
-  emprestado: '#1565C0',
-  desligado: '#757575',
-  suspenso: '#F9A825',
+  ativo: '#059669',
+  lesionado: '#DC2626',
+  emprestado: '#2563EB',
+  desligado: '#6B7280',
+  suspenso: '#D97706',
 }
 
 const CATEGORY_BAR_DATA = [
@@ -105,7 +105,7 @@ export default function AdminDashboard() {
     if (overduePayments.length > 0) {
       items.push({
         text: `${overduePayments.length} pagamento(s) em atraso`,
-        color: '#C62828',
+        color: '#DC2626',
         type: 'error',
       })
     }
@@ -114,7 +114,7 @@ export default function AdminDashboard() {
     if (activeInjuries.length > 0) {
       items.push({
         text: `${activeInjuries.length} atleta(s) em tratamento`,
-        color: '#F9A825',
+        color: '#D97706',
         type: 'warning',
       })
     }
@@ -129,7 +129,7 @@ export default function AdminDashboard() {
     if (expiringContracts.length > 0) {
       items.push({
         text: `${expiringContracts.length} contrato(s) vencem em ate 90 dias`,
-        color: '#1565C0',
+        color: '#2563EB',
         type: 'info',
       })
     }
@@ -138,7 +138,7 @@ export default function AdminDashboard() {
     if (pendingPayments.length > 0) {
       items.push({
         text: `${pendingPayments.length} pagamento(s) pendente(s)`,
-        color: '#F9A825',
+        color: '#D97706',
         type: 'warning',
       })
     }
@@ -161,29 +161,29 @@ export default function AdminDashboard() {
       label: 'Atletas Ativos',
       value: atletasAtivos,
       icon: Users,
-      bgColor: 'bg-green-100',
-      iconColor: 'text-[#2E7D32]',
+      bgColor: 'bg-slate-100',
+      iconColor: 'text-slate-700',
     },
     {
       label: 'Presenca Media',
       value: `${presencaMedia}%`,
       icon: TrendingUp,
-      bgColor: 'bg-blue-100',
-      iconColor: 'text-[#1565C0]',
+      bgColor: 'bg-slate-100',
+      iconColor: 'text-slate-600',
     },
     {
       label: 'Lesoes Abertas',
       value: lesoesAbertas,
       icon: HeartPulse,
-      bgColor: 'bg-red-100',
-      iconColor: 'text-[#C62828]',
+      bgColor: 'bg-slate-100',
+      iconColor: 'text-slate-600',
     },
     {
       label: 'Pgtos Pendentes',
       value: pagamentosPendentes,
       icon: DollarSign,
-      bgColor: 'bg-amber-100',
-      iconColor: 'text-[#F9A825]',
+      bgColor: 'bg-slate-100',
+      iconColor: 'text-slate-600',
     },
   ]
 
@@ -207,7 +207,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA]">
+    <div className="min-h-screen bg-background">
       <TopBar title="Dashboard" subtitle="Visao geral do clube" />
 
       <main className="p-4 md:p-6 space-y-6 max-w-7xl mx-auto">
@@ -296,7 +296,7 @@ export default function AdminDashboard() {
           <Card className="border-0 shadow-sm">
             <CardHeader className="pb-3">
               <CardTitle className="text-base font-semibold flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 text-[#F9A825]" />
+                <AlertTriangle className="w-4 h-4 text-amber-600" />
                 Alertas
               </CardTitle>
             </CardHeader>
@@ -400,7 +400,7 @@ export default function AdminDashboard() {
                     />
                     <Bar
                       dataKey="presenca"
-                      fill="#4CAF50"
+                      fill="#64748B"
                       radius={[4, 4, 0, 0]}
                       barSize={40}
                     />
@@ -414,7 +414,7 @@ export default function AdminDashboard() {
         {/* Quick Actions */}
         <div className="flex flex-wrap gap-3">
           <Button
-            className="bg-[#1B5E20] hover:bg-[#1B5E20]/90 text-white"
+            className="bg-slate-800 hover:bg-slate-700 text-white"
             onClick={() => navigate('/calendario')}
           >
             <CalendarPlus className="w-4 h-4 mr-2" />
@@ -422,7 +422,7 @@ export default function AdminDashboard() {
           </Button>
           <Button
             variant="outline"
-            className="border-[#1B5E20] text-[#1B5E20] hover:bg-[#1B5E20]/5"
+            className="border-slate-300 text-slate-700 hover:bg-slate-50"
             onClick={() => navigate('/relatorios')}
           >
             <BarChart3 className="w-4 h-4 mr-2" />

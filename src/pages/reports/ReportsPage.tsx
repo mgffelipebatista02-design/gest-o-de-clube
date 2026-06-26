@@ -73,8 +73,8 @@ export function ReportsPage() {
                   <YAxis fontSize={12} />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="gols" name="Gols" fill="#1B5E20" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="assistencias" name="Assistencias" fill="#4CAF50" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="gols" name="Gols" fill="#334155" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="assistencias" name="Assistencias" fill="#94A3B8" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
@@ -94,7 +94,7 @@ export function ReportsPage() {
                   <XAxis type="number" domain={[0, 100]} fontSize={12} />
                   <YAxis type="category" dataKey="nome" fontSize={12} width={80} />
                   <Tooltip formatter={(value: unknown) => `${value}%`} />
-                  <Bar dataKey="presenca" name="Presenca %" fill="#1565C0" radius={[0, 4, 4, 0]} />
+                  <Bar dataKey="presenca" name="Presenca %" fill="#64748B" radius={[0, 4, 4, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
@@ -174,7 +174,7 @@ export function ReportsPage() {
                         <PolarGrid />
                         <PolarAngleAxis dataKey="attr" fontSize={12} />
                         <PolarRadiusAxis domain={[0, 100]} tick={false} />
-                        <Radar dataKey="value" stroke="#1B5E20" fill="#4CAF50" fillOpacity={0.3} />
+                        <Radar dataKey="value" stroke="#334155" fill="#94A3B8" fillOpacity={0.3} />
                       </RadarChart>
                     </ResponsiveContainer>
                   </div>
@@ -186,7 +186,7 @@ export function ReportsPage() {
                         <XAxis dataKey="mes" fontSize={12} />
                         <YAxis domain={[0, 10]} fontSize={12} />
                         <Tooltip />
-                        <Line type="monotone" dataKey="nota" stroke="#1B5E20" strokeWidth={2} dot={{ fill: '#1B5E20' }} />
+                        <Line type="monotone" dataKey="nota" stroke="#334155" strokeWidth={2} dot={{ fill: '#334155' }} />
                       </LineChart>
                     </ResponsiveContainer>
                   </div>

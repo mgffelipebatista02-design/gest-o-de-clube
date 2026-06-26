@@ -27,11 +27,11 @@ export function ConvocationPage() {
           upcomingGames.map((game) => {
             const status = confirmations[game.id]
             return (
-              <Card key={game.id} className="border-l-4 border-l-clube-error">
+              <Card key={game.id} className="border-l-4 border-l-slate-700">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Trophy className="w-5 h-5 text-clube-error" />
+                      <Trophy className="w-5 h-5 text-slate-700" />
                       <CardTitle className="text-lg">Clube Pro vs {game.adversario}</CardTitle>
                     </div>
                     {status && (
@@ -59,7 +59,7 @@ export function ConvocationPage() {
                     <div className="flex gap-3 mt-4">
                       <Button
                         onClick={() => handleConfirm(game.id, 'confirmado')}
-                        className="bg-clube-success hover:bg-clube-success/90"
+                        className="bg-slate-800 hover:bg-slate-700"
                       >
                         <CheckCircle2 className="w-4 h-4 mr-2" />
                         Confirmar Presenca

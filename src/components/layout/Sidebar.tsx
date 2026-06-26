@@ -21,8 +21,8 @@ export function Sidebar() {
   return (
     <aside className="hidden md:flex flex-col w-64 bg-sidebar text-sidebar-foreground min-h-screen">
       <div className="flex items-center gap-3 px-6 py-5 border-b border-sidebar-border">
-        <div className="w-10 h-10 rounded-lg bg-sidebar-primary flex items-center justify-center">
-          <Shield className="w-6 h-6 text-sidebar-primary-foreground" />
+        <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">
+          <Shield className="w-6 h-6 text-white" />
         </div>
         <div>
           <h1 className="text-lg font-bold leading-tight">Clube Pro</h1>

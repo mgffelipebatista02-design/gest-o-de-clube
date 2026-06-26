@@ -31,14 +31,14 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#FAFAFA] px-4 py-8">
+    <div className="min-h-screen flex items-center justify-center bg-background px-4 py-8">
       <div className="w-full max-w-md space-y-6">
         {/* Branding */}
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#1B5E20] shadow-lg">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-800 shadow-lg">
             <Shield className="w-9 h-9 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-[#1B5E20]">Clube Pro</h1>
+          <h1 className="text-2xl font-bold text-slate-800">Clube Pro</h1>
           <p className="text-sm text-muted-foreground">Recuperar senha</p>
         </div>
 
@@ -49,11 +49,11 @@ export default function ForgotPasswordPage() {
           <CardContent>
             {sent ? (
               <div className="text-center space-y-4 py-4">
-                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-green-50">
-                  <CheckCircle className="w-8 h-8 text-[#2E7D32]" />
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-slate-100">
+                  <CheckCircle className="w-8 h-8 text-slate-700" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-[#2E7D32]">Email enviado!</h3>
+                  <h3 className="font-semibold text-slate-700">Email enviado!</h3>
                   <p className="text-sm text-muted-foreground mt-1">
                     Email de recuperacao enviado. Verifique sua caixa de entrada e siga as instrucoes para redefinir sua senha.
                   </p>
@@ -83,14 +83,14 @@ export default function ForgotPasswordPage() {
                     {...register('email')}
                   />
                   {errors.email && (
-                    <p className="text-xs text-[#C62828]">{errors.email.message}</p>
+                    <p className="text-xs text-destructive">{errors.email.message}</p>
                   )}
                 </div>
 
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-[#1B5E20] hover:bg-[#1B5E20]/90 text-white"
+                  className="w-full bg-slate-800 hover:bg-slate-700 text-white"
                 >
                   <Mail className="w-4 h-4 mr-2" />
                   Enviar link de recuperacao
@@ -99,7 +99,7 @@ export default function ForgotPasswordPage() {
                 <div className="text-center">
                   <Link
                     to="/login"
-                    className="text-sm text-[#1565C0] hover:underline inline-flex items-center gap-1"
+                    className="text-sm text-slate-600 hover:underline inline-flex items-center gap-1"
                   >
                     <ArrowLeft className="w-3 h-3" />
                     Voltar ao login

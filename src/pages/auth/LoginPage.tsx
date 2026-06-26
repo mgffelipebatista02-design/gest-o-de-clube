@@ -63,14 +63,14 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#FAFAFA] px-4 py-8">
+    <div className="min-h-screen flex items-center justify-center bg-background px-4 py-8">
       <div className="w-full max-w-md space-y-6">
         {/* Branding */}
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#1B5E20] shadow-lg">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-800 shadow-lg">
             <Shield className="w-9 h-9 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-[#1B5E20]">Clube Pro</h1>
+          <h1 className="text-2xl font-bold text-slate-800">Clube Pro</h1>
           <p className="text-sm text-muted-foreground">
             Gestao inteligente para seu clube
           </p>
@@ -92,7 +92,7 @@ export default function LoginPage() {
                   {...register('email')}
                 />
                 {errors.email && (
-                  <p className="text-xs text-[#C62828]">{errors.email.message}</p>
+                  <p className="text-xs text-destructive">{errors.email.message}</p>
                 )}
               </div>
 
@@ -101,7 +101,7 @@ export default function LoginPage() {
                   <Label htmlFor="password">Senha</Label>
                   <Link
                     to="/esqueci-senha"
-                    className="text-xs text-[#1565C0] hover:underline"
+                    className="text-xs text-slate-600 hover:underline"
                   >
                     Esqueci minha senha
                   </Link>
@@ -126,20 +126,20 @@ export default function LoginPage() {
                   </button>
                 </div>
                 {errors.password && (
-                  <p className="text-xs text-[#C62828]">{errors.password.message}</p>
+                  <p className="text-xs text-destructive">{errors.password.message}</p>
                 )}
               </div>
 
               {loginError && (
                 <div className="p-3 rounded-lg bg-red-50 border border-red-200">
-                  <p className="text-sm text-[#C62828]">{loginError}</p>
+                  <p className="text-sm text-destructive">{loginError}</p>
                 </div>
               )}
 
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-[#1B5E20] hover:bg-[#1B5E20]/90 text-white"
+                className="w-full bg-slate-800 hover:bg-slate-700 text-white"
               >
                 <LogIn className="w-4 h-4 mr-2" />
                 Entrar
@@ -165,7 +165,7 @@ export default function LoginPage() {
 
             <p className="text-sm text-center text-muted-foreground">
               Nao tem conta?{' '}
-              <Link to="/registro" className="text-[#1565C0] font-medium hover:underline">
+              <Link to="/registro" className="text-slate-600 font-medium hover:underline">
                 Criar conta
               </Link>
             </p>
@@ -184,7 +184,7 @@ export default function LoginPage() {
                   key={role}
                   variant="outline"
                   size="sm"
-                  className="text-xs border-[#4CAF50] text-[#1B5E20] hover:bg-[#4CAF50]/10"
+                  className="text-xs border-slate-300 text-slate-700 hover:bg-slate-100"
                   onClick={() => handleQuickLogin(role)}
                 >
                   {ROLE_LABELS[role]}

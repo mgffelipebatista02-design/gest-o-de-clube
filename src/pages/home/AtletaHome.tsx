@@ -45,14 +45,14 @@ export function AtletaHome() {
       <div className="p-4 md:p-6 space-y-6">
         {/* Convocacao */}
         {nextGame && (
-          <Card className="border-l-4 border-l-clube-error">
+          <Card className="border-l-4 border-l-slate-700">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Trophy className="w-5 h-5 text-clube-error" />
+                  <Trophy className="w-5 h-5 text-slate-700" />
                   <CardTitle className="text-lg">Convocacao</CardTitle>
                 </div>
-                <Badge className="bg-green-100 text-green-800">Convocado</Badge>
+                <Badge className="bg-slate-100 text-slate-800">Convocado</Badge>
               </div>
             </CardHeader>
             <CardContent>
@@ -69,7 +69,7 @@ export function AtletaHome() {
               </div>
               <div className="mt-4">
                 {convocationConfirmed ? (
-                  <div className="flex items-center gap-2 text-clube-success">
+                  <div className="flex items-center gap-2 text-slate-600">
                     <CheckCircle2 className="w-5 h-5" />
                     <span className="font-medium">Presenca confirmada!</span>
                   </div>
@@ -97,21 +97,21 @@ export function AtletaHome() {
           </Card>
           <Card>
             <CardContent className="pt-4 text-center">
-              <Activity className="w-6 h-6 mx-auto text-clube-info mb-1" />
+              <Activity className="w-6 h-6 mx-auto text-slate-500 mb-1" />
               <p className="text-2xl font-bold">{user.assistencias}</p>
               <p className="text-xs text-muted-foreground">Assistencias</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="pt-4 text-center">
-              <Trophy className="w-6 h-6 mx-auto text-clube-warning mb-1" />
+              <Trophy className="w-6 h-6 mx-auto text-slate-600 mb-1" />
               <p className="text-2xl font-bold">{user.jogosDisputados}</p>
               <p className="text-xs text-muted-foreground">Jogos</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="pt-4 text-center">
-              <Calendar className="w-6 h-6 mx-auto text-clube-success mb-1" />
+              <Calendar className="w-6 h-6 mx-auto text-slate-600 mb-1" />
               <p className="text-2xl font-bold">{presencaPercent}%</p>
               <p className="text-xs text-muted-foreground">Presenca</p>
             </CardContent>
@@ -154,10 +154,10 @@ export function AtletaHome() {
 
         {/* Status Clinico */}
         {activeInjury && (
-          <Card className="border-l-4 border-l-clube-error">
+          <Card className="border-l-4 border-l-slate-700">
             <CardHeader className="pb-3">
               <div className="flex items-center gap-2">
-                <HeartPulse className="w-5 h-5 text-clube-error" />
+                <HeartPulse className="w-5 h-5 text-slate-700" />
                 <CardTitle className="text-base">Status Clinico</CardTitle>
               </div>
             </CardHeader>

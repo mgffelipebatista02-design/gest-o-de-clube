@@ -65,7 +65,7 @@ export function AthleteStatsPage() {
                   <PolarGrid />
                   <PolarAngleAxis dataKey="attr" fontSize={12} />
                   <PolarRadiusAxis domain={[0, 100]} tick={false} />
-                  <Radar dataKey="value" stroke="#1B5E20" fill="#4CAF50" fillOpacity={0.3} />
+                  <Radar dataKey="value" stroke="#334155" fill="#94A3B8" fillOpacity={0.3} />
                 </RadarChart>
               </ResponsiveContainer>
             </CardContent>
@@ -80,7 +80,7 @@ export function AthleteStatsPage() {
                   <XAxis dataKey="mes" fontSize={12} />
                   <YAxis domain={[0, 10]} fontSize={12} />
                   <Tooltip />
-                  <Line type="monotone" dataKey="nota" name="Nota" stroke="#1B5E20" strokeWidth={2} dot={{ fill: '#1B5E20' }} />
+                  <Line type="monotone" dataKey="nota" name="Nota" stroke="#334155" strokeWidth={2} dot={{ fill: '#334155' }} />
                 </LineChart>
               </ResponsiveContainer>
             </CardContent>

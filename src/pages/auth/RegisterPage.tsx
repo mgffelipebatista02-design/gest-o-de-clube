@@ -62,14 +62,14 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#FAFAFA] px-4 py-8">
+    <div className="min-h-screen flex items-center justify-center bg-background px-4 py-8">
       <div className="w-full max-w-md space-y-6">
         {/* Branding */}
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#1B5E20] shadow-lg">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-800 shadow-lg">
             <Shield className="w-9 h-9 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-[#1B5E20]">Clube Pro</h1>
+          <h1 className="text-2xl font-bold text-slate-800">Clube Pro</h1>
           <p className="text-sm text-muted-foreground">Crie sua conta</p>
         </div>
 
@@ -88,7 +88,7 @@ export default function RegisterPage() {
                   {...register('nome')}
                 />
                 {errors.nome && (
-                  <p className="text-xs text-[#C62828]">{errors.nome.message}</p>
+                  <p className="text-xs text-destructive">{errors.nome.message}</p>
                 )}
               </div>
 
@@ -101,7 +101,7 @@ export default function RegisterPage() {
                   {...register('email')}
                 />
                 {errors.email && (
-                  <p className="text-xs text-[#C62828]">{errors.email.message}</p>
+                  <p className="text-xs text-destructive">{errors.email.message}</p>
                 )}
               </div>
 
@@ -122,7 +122,7 @@ export default function RegisterPage() {
                   </SelectContent>
                 </Select>
                 {errors.perfil && (
-                  <p className="text-xs text-[#C62828]">{errors.perfil.message}</p>
+                  <p className="text-xs text-destructive">{errors.perfil.message}</p>
                 )}
               </div>
 
@@ -148,7 +148,7 @@ export default function RegisterPage() {
                   </button>
                 </div>
                 {errors.senha && (
-                  <p className="text-xs text-[#C62828]">{errors.senha.message}</p>
+                  <p className="text-xs text-destructive">{errors.senha.message}</p>
                 )}
               </div>
 
@@ -174,14 +174,14 @@ export default function RegisterPage() {
                   </button>
                 </div>
                 {errors.confirmarSenha && (
-                  <p className="text-xs text-[#C62828]">{errors.confirmarSenha.message}</p>
+                  <p className="text-xs text-destructive">{errors.confirmarSenha.message}</p>
                 )}
               </div>
 
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-[#1B5E20] hover:bg-[#1B5E20]/90 text-white"
+                className="w-full bg-slate-800 hover:bg-slate-700 text-white"
               >
                 <UserPlus className="w-4 h-4 mr-2" />
                 Criar conta
@@ -189,7 +189,7 @@ export default function RegisterPage() {
 
               <p className="text-sm text-center text-muted-foreground">
                 Ja tem conta?{' '}
-                <Link to="/login" className="text-[#1565C0] font-medium hover:underline">
+                <Link to="/login" className="text-slate-600 font-medium hover:underline">
                   Entrar
                 </Link>
               </p>

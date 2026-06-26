@@ -168,14 +168,14 @@ export interface Club {
 }
 
 export const EVENT_COLORS: Record<EventType, string> = {
-  jogo: '#C62828',
-  treino: '#2E7D32',
-  academia: '#F9A825',
-  alimentacao: '#E65100',
-  folga: '#7B1FA2',
-  pagamento: '#1565C0',
-  fisioterapia: '#9E9E9E',
-  reuniao: '#5D4037',
+  jogo: '#991B1B',
+  treino: '#047857',
+  academia: '#B45309',
+  alimentacao: '#C2410C',
+  folga: '#6D28D9',
+  pagamento: '#1D4ED8',
+  fisioterapia: '#6B7280',
+  reuniao: '#57534E',
 }
 
 export const EVENT_LABELS: Record<EventType, string> = {
@@ -190,11 +190,11 @@ export const EVENT_LABELS: Record<EventType, string> = {
 }
 
 export const STATUS_COLORS: Record<AthleteStatus, string> = {
-  ativo: '#2E7D32',
-  lesionado: '#C62828',
-  emprestado: '#1565C0',
-  desligado: '#757575',
-  suspenso: '#F9A825',
+  ativo: '#059669',
+  lesionado: '#DC2626',
+  emprestado: '#2563EB',
+  desligado: '#6B7280',
+  suspenso: '#D97706',
 }
 
 export const POSITION_LABELS: Record<Position, string> = {

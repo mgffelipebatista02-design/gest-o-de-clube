@@ -41,7 +41,7 @@ export function TecnicoHome() {
           <Card className="border-l-4" style={{ borderLeftColor: EVENT_COLORS.jogo }}>
             <CardHeader className="pb-3">
               <div className="flex items-center gap-2">
-                <Trophy className="w-5 h-5 text-clube-error" />
+                <Trophy className="w-5 h-5 text-slate-700" />
                 <CardTitle className="text-lg">Proximo Jogo</CardTitle>
               </div>
             </CardHeader>
@@ -90,15 +90,15 @@ export function TecnicoHome() {
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Aptos</span>
-                  <span className="text-2xl font-bold text-clube-success">{availableAthletes.length}</span>
+                  <span className="text-2xl font-bold text-slate-700">{availableAthletes.length}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Lesionados</span>
-                  <span className="text-lg font-semibold text-clube-error">{injuredAthletes.length}</span>
+                  <span className="text-lg font-semibold text-slate-700">{injuredAthletes.length}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Suspensos</span>
-                  <span className="text-lg font-semibold text-clube-warning">{suspendedAthletes.length}</span>
+                  <span className="text-lg font-semibold text-slate-500">{suspendedAthletes.length}</span>
                 </div>
               </div>
               <Button variant="outline" className="w-full mt-4" onClick={() => navigate('/elenco')}>
@@ -111,22 +111,22 @@ export function TecnicoHome() {
           <Card>
             <CardHeader className="pb-3">
               <div className="flex items-center gap-2">
-                <UserCheck className="w-5 h-5 text-clube-info" />
+                <UserCheck className="w-5 h-5 text-slate-500" />
                 <CardTitle className="text-base">Confirmacoes</CardTitle>
               </div>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-clube-success" />
+                  <CheckCircle2 className="w-4 h-4 text-slate-700" />
                   <span className="text-sm">{mockConfirmations.confirmed} confirmados</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4 text-clube-warning" />
+                  <AlertCircle className="w-4 h-4 text-slate-500" />
                   <span className="text-sm">{mockConfirmations.pending} pendentes</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <XCircle className="w-4 h-4 text-clube-error" />
+                  <XCircle className="w-4 h-4 text-slate-700" />
                   <span className="text-sm">{mockConfirmations.absent} ausencias</span>
                 </div>
               </div>

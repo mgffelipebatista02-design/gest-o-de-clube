@@ -109,7 +109,7 @@ export function LineupPage() {
       <div className="p-4 md:p-6 space-y-6">
         {/* Match Info */}
         {nextGame && (
-          <div className="flex items-center justify-between bg-primary/5 p-4 rounded-lg">
+          <div className="flex items-center justify-between bg-slate-50 border border-slate-200 p-4 rounded-lg">
             <div>
               <p className="font-bold">Clube Pro vs {nextGame.adversario}</p>
               <p className="text-sm text-muted-foreground">
@@ -157,7 +157,7 @@ export function LineupPage() {
                     <Button variant="ghost" size="sm" onClick={resetLineup}>
                       <RotateCcw className="w-4 h-4" />
                     </Button>
-                    <Button size="sm" className="bg-primary">
+                    <Button size="sm" className="bg-slate-800 hover:bg-slate-700">
                       <Save className="w-4 h-4 mr-1" />
                       Salvar
                     </Button>
@@ -203,7 +203,7 @@ export function LineupPage() {
                           draggable
                           onDragStart={() => setDraggedAthlete(titulares[index])}
                         >
-                          <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-sm font-bold text-primary border-2 border-white">
+                          <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-sm font-bold text-slate-800 border-2 border-white">
                             {titulares[index]!.numeroCamisa}
                           </div>
                           <span className="text-[10px] md:text-xs text-white font-medium mt-0.5 bg-black/40 px-1.5 rounded">
@@ -241,7 +241,7 @@ export function LineupPage() {
                       onDragStart={() => setDraggedAthlete(a)}
                     >
                       <GripVertical className="w-3 h-3 text-muted-foreground" />
-                      <span className="text-sm font-bold text-primary">{a.numeroCamisa}</span>
+                      <span className="text-sm font-bold text-slate-700">{a.numeroCamisa}</span>
                       <span className="text-sm">{a.nome.split(' ')[0]}</span>
                     </div>
                   ))}
@@ -282,7 +282,7 @@ export function LineupPage() {
                         {POSITION_LABELS[athlete.posicao]}
                       </p>
                     </div>
-                    <span className="text-sm font-bold text-primary">#{athlete.numeroCamisa}</span>
+                    <span className="text-sm font-bold text-slate-600">#{athlete.numeroCamisa}</span>
                   </div>
                 ))}
               </div>
